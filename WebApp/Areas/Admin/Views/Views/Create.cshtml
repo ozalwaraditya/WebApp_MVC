@@ -1,0 +1,43 @@
+﻿@model User
+
+<form method="post" asp-action="Create" asp-controller="User">
+    <div class="border p-4 mt-4 shadow rounded">
+        <input hidden asp-for="Id"/>
+        <div class="row pb-2">
+            <h2 class="text-primary">Add User</h2>
+            <hr />
+        </div>
+
+        <!-- Name -->
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label"></label>
+            <input asp-for="Name" class="form-control" placeholder="Enter name" required />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <!-- Email -->
+        <div class="mb-3">
+            <label asp-for="Email" class="form-label"></label>
+            <input asp-for="Email" type="email" class="form-control" placeholder="Enter email" required />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <!-- Password -->
+        <div class="mb-3">
+            <label asp-for="Password" class="form-label"></label>
+            <input asp-for="Password" type="password" class="form-control" placeholder="Enter password" required />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+
+        <!-- Submit and Back Buttons -->
+        <div class="row">
+            <div class="col-6">
+                <button type="submit" class="btn btn-primary form-control">Add User</button>
+            </div>
+            <div class="col-6">
+                <a asp-controller="User" asp-action="Index" class="btn btn-outline-secondary form-control">Back to Users List</a>
+            </div>
+        </div>
+    </div>
+</form>
+

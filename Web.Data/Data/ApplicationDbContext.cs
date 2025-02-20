@@ -11,11 +11,6 @@ namespace Web.Data.Data
         }
 
         public DbSet<User> Users { get; set; }
-
-            //Seeding the data to database
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-       
-        //}
+        public DbSet<Category> Categories { get; set; }
     }
 }
