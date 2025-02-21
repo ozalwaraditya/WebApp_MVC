@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Web.Data.Data;
+using Web.Data.Repository;
 using Web.Models;
 
 namespace WebApp.Controllers
@@ -8,16 +9,17 @@ namespace WebApp.Controllers
     [Area("Admin")]
     public class CategoryController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        //private readonly ApplicationDbContext _context;
+        private readonly UnitOfWork _unitOfWork;
 
-        public CategoryController(ApplicationDbContext context)
+        public CategoryController(UnitOfWork unitOfWork)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
         }
 
         public IActionResult Index()
         {
-            var categories = _context.Categories.ToList();
+            var categories = _unitOfWork.Category.GetAll().ToList();
             if (TempData["success"] != null)
             {
                 TempData["success"] = TempData["success"];
@@ -27,9 +29,9 @@ namespace WebApp.Controllers
 
         public IActionResult Upsert(int? id)
         {
-            if(id != null && id != 0)
+            if (id != null && id != 0)
             {
-                var category = _context.Categories.FirstOrDefault(u=>u.Id == id);
+                var category = _unitOfWork.Category.Get(u => u.Id == id);
                 return View(category);
             }
             return View(new Category());
@@ -38,17 +40,17 @@ namespace WebApp.Controllers
         [HttpPost]
         public IActionResult Upsert(Category Model)
         {
-            if(Model.Id == 0)
+            if (Model.Id == 0)
             {
                 TempData["success"] = "Category Added Successfully!!!";
-                _context.Categories.Add(Model);
+                _unitOfWork.Category.Add(Model);
             }
             else
             {
                 TempData["success"] = "Category Updated Successfully!!!";
-                _context.Categories.Update(Model);
+                _unitOfWork.Category.Update(Model);
             }
-            _context.SaveChanges();
+            _unitOfWork.Save();
             return RedirectToAction("Index");
         }
 
@@ -56,7 +58,7 @@ namespace WebApp.Controllers
         {
             if (id != 0)
             {
-                var category = _context.Categories.FirstOrDefault(u => u.Id == id);
+                var category = _unitOfWork.Category.Get(u => u.Id == id);
                 return View(category);
             }
             return View();
@@ -65,8 +67,8 @@ namespace WebApp.Controllers
         [HttpPost]
         public IActionResult Delete(Category model)
         {
-            _context.Categories.Remove(model);
-            _context.SaveChanges();
+            _unitOfWork.Category.Delete(model);
+            _unitOfWork.Save();
             TempData["success"] = "Category Deleted Successfully!!!";
             return RedirectToAction("Index");
         }

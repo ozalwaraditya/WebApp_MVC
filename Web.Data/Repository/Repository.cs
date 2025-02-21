@@ -38,7 +38,7 @@ namespace Web.Data.Repository
         }
 
 
-        public IEnumerable<T> GetAll(Expression<Func<T, bool>> filter)
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null)
         {
             IQueryable<T> query = dbSet;
 
@@ -49,5 +49,6 @@ namespace Web.Data.Repository
 
             return query.ToList();
         }
+
     }
 }
