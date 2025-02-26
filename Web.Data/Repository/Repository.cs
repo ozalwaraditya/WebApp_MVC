@@ -18,6 +18,7 @@ namespace Web.Data.Repository
         {
             _context = context;
             this.dbSet = _context.Set<T>();  //This is for populating the dbset for relative updating
+            _context.Products.Include(u => u.Category).Include(u=>u.CategoryId);
         }
 
         public void Add(T entity)
@@ -37,8 +38,8 @@ namespace Web.Data.Repository
             return query.FirstOrDefault();
         }
 
-
-        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null)
+        // Category, CoverType etc
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, string? includeProperties = null)
         {
             IQueryable<T> query = dbSet;
 
@@ -47,8 +48,18 @@ namespace Web.Data.Repository
                 query = query.Where(filter);
             }
 
+            if (!string.IsNullOrEmpty(includeProperties))
+            {
+                foreach (var includeProperty in includeProperties.
+                    Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeProperty);
+                }
+            }
+
             return query.ToList();
         }
+
 
     }
 }

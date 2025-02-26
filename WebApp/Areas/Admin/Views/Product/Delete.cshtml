@@ -1,37 +1,42 @@
-﻿@model Category
+﻿@model ProductVM
 
-<form method="post" asp-area="Admin" asp-action="Delete" asp-controller="Category">
+<form method="post" asp-area="Admin" asp-action="Delete" asp-controller="Product">
     <div class="border p-4 mt-4 shadow rounded">
-        <input hidden asp-for="Id" />
+        <input type="hidden" asp-for="Product.Id" />
         <div class="row pb-2">
-            <h2 class="text-primary">Delete Category</h2>
+            <h2 class="text-danger">Delete Product</h2>
             <hr />
         </div>
 
-        <!-- Name -->
+        <!-- Product Name -->
         <div class="mb-3">
-            <label asp-for="Name" class="form-label"></label>
-            <input asp-for="Name" class="form-control" placeholder="Enter Category" required disabled/>
-            <span asp-validation-for="Name" class="text-danger"></span>
+            <label asp-for="Product.Title" class="form-label"></label>
+            <input asp-for="Product.Title" class="form-control" placeholder="Enter Product Name" required disabled />
+            <span asp-validation-for="Product.Title" class="text-danger"></span>
         </div>
 
-        <!-- Display Order -->
+        <!-- Category -->
         <div class="mb-3">
-            <label asp-for="DisplayOrder" class="form-label"></label>
-            <input asp-for="DisplayOrder" type="number" class="form-control" placeholder="Enter Display Order" required disabled />
-            <span asp-validation-for="DisplayOrder" class="text-danger"></span>
+            <label asp-for="Product.CategoryId" class="form-label">Category</label>
+            <select asp-for="Product.CategoryId" class="form-control" disabled
+                    asp-items="Model.CategoryList">
+            </select>
+            <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
         </div>
 
-
+        <!-- You can add other product fields here as needed -->
         <!-- Submit and Back Buttons -->
         <div class="row">
             <div class="col-6">
-                <button type="submit" class="btn btn-danger form-control text-white">Delete Category</button>
+                <button type="submit" class="btn btn-danger form-control text-white">
+                    Delete Product
+                </button>
             </div>
             <div class="col-6">
-                <a asp-controller="User" asp-action="Index" class="btn btn-outline-secondary form-control">Back to Categories List</a>
+                <a asp-area="Product" asp-controller="Product" asp-action="Index" class="btn btn-outline-secondary form-control">
+                    Back to Products List
+                </a>
             </div>
         </div>
     </div>
 </form>
-
