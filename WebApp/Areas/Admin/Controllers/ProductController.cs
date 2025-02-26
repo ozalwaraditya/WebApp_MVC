@@ -118,35 +118,69 @@ namespace WebApp.Controllers
 
         }
 
+        //public IActionResult Delete(int? id)
+        //{
+        //    IEnumerable<SelectListItem> CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
+        //    {
+        //        Text = u.Name,
+        //        Value = u.Id.ToString()
+        //    });
+
+        //    ProductVM productVM = new ProductVM
+        //    {
+        //        Product = new Product(),
+        //        CategoryList = CategoryList
+        //    };
+
+        //    if (id != 0)
+        //    {
+        //        productVM.Product = _unitOfWork.Product.Get(u => u.Id == id);
+        //        return View(productVM);
+        //    }
+        //    return View();
+        //}
+
+        //[HttpPost]
+        //public IActionResult Delete(ProductVM model)
+        //{
+        //    _unitOfWork.Product.Delete(model.Product);
+        //    _unitOfWork.Save();
+        //    TempData["success"] = "Category Deleted Successfully!!!";
+        //    return RedirectToAction("Index");
+        //}
+
+
+
+        #region API CALL
+
+        [HttpGet]
+
+        public IActionResult GetAll()
+        {
+            var objProductList = _unitOfWork.Product.GetAll(includeProperties: "Category").ToList();
+            return Json(new { data = objProductList });
+        }
+
+        [HttpDelete]
         public IActionResult Delete(int? id)
         {
-            IEnumerable<SelectListItem> CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
-            {
-                Text = u.Name,
-                Value = u.Id.ToString()
-            });
+            var deletingProduct = _unitOfWork.Product.Get(u=>u.Id == id);
 
-            ProductVM productVM = new ProductVM
-            {
-                Product = new Product(),
-                CategoryList = CategoryList
-            };
+            var oldImageUrl = Path.Combine(_webHostEnvironment.WebRootPath, deletingProduct.ImageUrl.Trim('\\'));
 
-            if (id != 0)
+            if (System.IO.File.Exists(oldImageUrl))
             {
-                productVM.Product = _unitOfWork.Product.Get(u => u.Id == id);
-                return View(productVM);
+                System.IO.File.Delete(oldImageUrl);
             }
-            return View();
+
+            _unitOfWork.Product.Delete(deletingProduct);
+            _unitOfWork.Save();
+
+            return Json(new {success = true, message = "Delete Successfully"});
+
         }
 
-        [HttpPost]
-        public IActionResult Delete(ProductVM model)
-        {
-            _unitOfWork.Product.Delete(model.Product);
-            _unitOfWork.Save();
-            TempData["success"] = "Category Deleted Successfully!!!";
-            return RedirectToAction("Index");
-        }
+        #endregion
+
     }
 }
