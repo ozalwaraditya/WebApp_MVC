@@ -26,9 +26,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.1">
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.11">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -38,11 +40,13 @@
   <ItemGroup>
     <ProjectReference Include="..\Web.Data\Web.Data.csproj" />
     <ProjectReference Include="..\WebApp.Models\Web.Models.csproj" />
+    <ProjectReference Include="..\WebApp.Utility\WebApp.Utility.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Areas\Admin\Controllers\" />
     <Folder Include="Areas\Admin\Views\Product\" />
+    <Folder Include="Areas\Identity\Data\" />
     <Folder Include="wwwroot\images\product\" />
   </ItemGroup>
 
