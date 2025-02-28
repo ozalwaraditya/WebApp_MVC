@@ -1,12 +1,15 @@
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Web.Data.Data;
 using Web.Data.Repository;
 using Web.Models;
+using WebApp.Utility;
 
 namespace WebApp.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Admin)]                              //Only Admin Can Access this page
     public class CategoryController : Controller
     {
         //private readonly ApplicationDbContext _context;

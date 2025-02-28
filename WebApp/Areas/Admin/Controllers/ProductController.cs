@@ -1,13 +1,16 @@
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Web.Data.Repository;
 using Web.Models;
 using Web.Models.ViewModels;
+using WebApp.Utility;
 
 namespace WebApp.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Admin)]                              //Only Admin Can Access this page
     public class ProductController : Controller
     {
         private readonly UnitOfWork _unitOfWork;

@@ -11,6 +11,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 
+
+
+
+
+
+
+
 builder.Services.AddDbContext<ApplicationDbContext>(options => 
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
@@ -21,6 +28,19 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 //                                                                                                          AddDefaultTokenProviders -IMP **
 builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+
+
+//This is will route to the proper pages of the wrong URL
+// ***This will work only after the Identity User is configured.
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = $"/Identity/Account/Login";
+    options.LogoutPath = $"/Identity/Account/Logout";
+    options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+});
+
+
+
 builder.Services.AddRazorPages(); // This is added for running of the identity pages which are razor pages
 builder.Services.AddScoped<UnitOfWork>();
 builder.Services.AddScoped<IEmailSender,EmailSender>();  // This line is added to avoid error comes - after seeding the role in OnGetAsync method in D:\Learning\Asp.Net Mvc\WebApp\WebApp\Areas\Identity\Pages\Account\Register.cshtml.cs 
